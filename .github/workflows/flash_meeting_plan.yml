@@ -59,7 +59,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -var-file workspaces_variables/dev.tfvars
+        run: terraform plan -var-file environments/flash_meeting.tfvars
         continue-on-error: true
 
       # - name: Terraform Apply
