@@ -1,0 +1,70 @@
+﻿name: Destroy
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: terraform
+          path: ${{ github.workspace }}//resources
+
+  destroy:
+    name: Destroy
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}/resources
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: us-east-1
+
+    needs: build
+    steps:
+      - name: Download Terraform
+        uses: actions/download-artifact@v2
+        with:
+          name: terraform
+          path: ${{ github.workspace }}//resources
+
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Flash Meeting
+        id: flash_meeting
+        run: terraform workspace new flash_meeting
+        continue-on-error: true
+
+      - name: Select Workspace
+        id: select
+        run: terraform workspace select flash_meeting
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+
+      # - name: Terraform Plan
+      #   id: plan
+      #   run: terraform plan -var-file environments/flash_meeting.tfvars
+      #   continue-on-error: true
+
+      # - name: Terraform Apply
+      #   run: terraform apply -var-file workspaces_variables/dev.tfvars -auto-approve
+      #   continue-on-error: false
+
+      - name: Terraform Destroy
+        run: terraform destroy -var-file workspaces_variables/dev.tfvars -auto-approve
