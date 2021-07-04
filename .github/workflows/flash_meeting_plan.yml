@@ -44,8 +44,8 @@ jobs:
         id: init
         run: terraform init
 
-      - name: Dev
-        id: dev
+      - name: Flash Meeting
+        id: flash_meeting
         run: terraform workspace new flash_meeting
         continue-on-error: true
 
