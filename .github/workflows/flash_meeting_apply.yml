@@ -63,7 +63,7 @@ jobs:
       #   continue-on-error: true
 
       - name: Terraform Apply
-        run: terraform apply -var-file workspaces_variables/dev.tfvars -auto-approve
+        run: terraform apply -var-file environments/flash_meeting.tfvars -auto-approve
         continue-on-error: false
 
       # - name: Terraform Destroy
