@@ -1,4 +1,4 @@
-﻿name: Apply
+﻿name: 2. Apply
 on:
   workflow_dispatch:
 

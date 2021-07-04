@@ -1,4 +1,4 @@
-﻿name: Plan
+﻿name: 1. Plan
 on:
   workflow_dispatch:
 

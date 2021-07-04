@@ -1,4 +1,4 @@
-﻿name: Destroy
+﻿name: 3. Destroy
 on:
   workflow_dispatch:
 
